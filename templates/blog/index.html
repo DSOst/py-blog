@@ -1,24 +1,20 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Главная страница Блога</title>
-    <link href="https://jsdelivr.net" rel="stylesheet">
-</head>
-<body class="container mt-5">
-    <h1 class="mb-4">Все публикации</h1>
+{% extends "base.html" %}
+
+{% block title %}Blog{% endblock %}
+
+{% block content %}
+    <h1 class="mb-3 font-weight-normal">All publications</h1>
 
     <div class="list-group mb-4">
         {% for post in post_list %}
-            <div class="list-group-item list-group-item-action flex-column align-items-start mb-3 shadow-sm p-4 rounded">
-                <div class="d-flex w-100 justify-content-between">
-                    <!-- Заголовок-ссылка на детальную страницу -->
-                    <h5 class="mb-1">
+            <div class="list-group-item list-group-item-action flex-column align-items-start mb-3 shadow-sm p-4 rounded border">
+                <div class="d-flex w-80 justify-content-between">
+                    <h5 class="mb-1 font-weight-bold">{{ post.title }}
                         <a href="{% url 'blog:post-detail' post.id %}" class="text-decoration-none text-primary">{{ post.title }}</a>
                     </h5>
-                    <small class="text-muted">{{ post.created_time|date:"Y-m-d H:i" }}</small>
+                    <small class="text-muted">{{ post.created_time|date:"N d, Y, g:i a." }}</small>
                 </div>
-                <p class="mb-1 mt-2 text-secondary">{{ post.content|truncatewords:30 }}</p>
+                <p class="mb-1 mt-2 text-secondary">{{ post.content }}</p>
                 <div class="mt-3 d-flex justify-content-between text-muted small">
                     <span>Автор: <strong>{{ post.owner.username }}</strong></span>
                     <span>Комментарии: <span class="badge bg-secondary">{{ post.comments.count }}</span></span>
@@ -29,11 +25,12 @@
         {% endfor %}
     </div>
 
+    <!-- Пагинация -->
     {% if is_paginated %}
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 {% if page_obj.has_previous %}
-                    <li class="page-item"><a class="page-item-link page-link" href="?page=1">&laquo; Первая</a></li>
+                    <li class="page-item"><a class="page-link" href="?page=1">&laquo; Первая</a></li>
                     <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Назад</a></li>
                 {% endif %}
 
@@ -46,5 +43,4 @@
             </ul>
         </nav>
     {% endif %}
-</body>
-</html>
+{% endblock %}

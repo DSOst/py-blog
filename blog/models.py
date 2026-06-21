@@ -38,4 +38,4 @@ class Commentary(models.Model):
         verbose_name_plural = "commentaries"
 
     def __str__(self):
-        return f"Comment by {self.owner.username}: {self.content}"
+        return f"Comment by {self.user.username}: {self.content}"
